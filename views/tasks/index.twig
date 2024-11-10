@@ -1,0 +1,40 @@
+{% extends '../layout.twig' %}
+
+{% block content %}
+  <h1>Tasks</h1>
+  <a href="/tasks/create" class="btn btn-primary mb-3">Create New Task</a>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Assigned To</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in tasks %}
+        <tr>
+          <td>{{ task.title }}</td>
+          <td>{{ task.description }}</td>
+          <td>
+            <span class="badge badge-{{ task.status == 'completed' ? 'success' : task.status == 'in-progress' ? 'info' : 'warning' }}">
+              {{ task.status }}
+            </span>
+          </td>
+          <td>{{ task.assignedTo.username }}</td>
+          <td>
+            <div class="btn-group">
+              <a href="/tasks/{{ task._id }}/edit" class="btn btn-sm btn-warning">Edit</a>
+              <form action="/tasks/{{ task._id }}/delete" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-sm btn-danger mx-2" onclick="return confirm('Are you sure?')">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
